@@ -36,15 +36,21 @@ A API conta com documentação automática via **Swagger UI**. Com o servidor ro
    git clone [https://github.com/murphiie/Projeto_Sistemas_Distribuidos.git](https://github.com/murphiie/Projeto_Sistemas_Distribuidos.git)
 
 2. **Configurar o Ambiente Virtual (VENV):**
+    ```bash
     python -m venv venv
     source venv/bin/activate
 
 3. **Instalar Dependências:**
+    ```bash
     pip install -r requirements.txt
 
 4. **Executar a API:**
+    ```bash
     uvicorn main:app --reload
 
 ## 👥 Equipe
-* **[Geovana Rodrigues](https://github.com/murphiie):** Engenharia de Backend, Modelagem Pydantic e Documentação de API.
-* **[Rafaela Ramos](https://github.com/RafaellaRamos1):** Engenharia de Infraestrutura, Configuração de Docker e Cluster MongoDB Sharding.
+
+| Integrante | Funções Principais | GitHub |
+| :--- | :--- | :--- |
+| **Geovana Rodrigues** | Engenharia de Backend, Modelagem Pydantic e Documentação de API | [@murphiie](https://github.com/murphiie) |
+| **Rafaela Ramos** | Engenharia de Infraestrutura, Configuração de Docker e Cluster MongoDB Sharding | [@RafaellaRamos1](https://github.com/RafaellaRamos1) |
