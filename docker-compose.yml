@@ -1,47 +1,30 @@
-version: "3.8"
-
 services:
+  configsvr:
+    image: mongo:6
+    container_name: configsvr
+    command: mongod --configsvr --replSet rs-config --port 27017 --bind_ip_all
+
+  shard1:
+    image: mongo:6
+    container_name: shard1
+    command: mongod --shardsvr --replSet rs-shard1 --port 27017 --bind_ip_all
+
+  mongos:
+    image: mongo:6
+    container_name: mongos
+    command: mongos --configdb rs-config/configsvr:27017 --port 27017 --bind_ip_all
+    ports:
+      - "27017:27017"
+    depends_on:
+      - configsvr
+      - shard1
+
   api:
     build: .
     container_name: newsflow_api
     ports:
       - "8000:8000"
-    depends_on:
-      - mongo1
-      - mongo2
-      - mongo3
     environment:
-      MONGO_URI: "mongodb://mongo1:27017,mongo2:27017,mongo3:27017/?replicaSet=rs0"
-    networks:
-      - newsflow_network
-
-  mongo1:
-    image: mongo:6
-    container_name: mongo1
-    ports:
-      - "27017:27017"
-    command: ["mongod", "--replSet", "rs0", "--port", "27017"]
-    networks:
-      - newsflow_network
-
-  mongo2:
-    image: mongo:6
-    container_name: mongo2
-    ports:
-      - "27018:27017"
-    command: ["mongod", "--replSet", "rs0", "--port", "27017"]
-    networks:
-      - newsflow_network
-
-  mongo3:
-    image: mongo:6
-    container_name: mongo3
-    ports:
-      - "27019:27017"
-    command: ["mongod", "--replSet", "rs0", "--port", "27017"]
-    networks:
-      - newsflow_network
-
-networks:
-  newsflow_network:
-    driver: bridge
+      - DATABASE_URL=mongodb://mongos:27017
+    depends_on:
+      - mongos

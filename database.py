@@ -15,6 +15,6 @@ def artigo_helper(artigo) -> dict:
         "titulo": artigo["titulo"],
         "corpo": artigo["corpo"],
         "autor": artigo["autor"],
-        "categoria": artigo["categoria"],
-        "data_publicacao": artigo["data_publicacao"],
+        "category": artigo.get("category", artigo.get("categoria", "Sem Categoria")),
+        "data_publicacao": artigo["data_publicacao"]
     }

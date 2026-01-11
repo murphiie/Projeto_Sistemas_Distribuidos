@@ -39,11 +39,11 @@ async def listar_artigos():
     return artigos
 
 #  4. BUSCAR POR CATEGORIA (GET) 
-@app.get("/artigos/categoria/{categoria}", response_model=List[dict], tags=["Artigos"])
-async def buscar_por_categoria(categoria: str):
-    """Filtra artigos pela Shard Key (Categoria)."""
+@app.get("/artigos/categoria/{category}", response_model=List[dict], tags=["Artigos"])
+async def buscar_por_categoria(category: str):
+    """Filtra artigos pela Shard Key (Category)."""
     artigos = []
-    async for documento in collection.find({"categoria": categoria}):
+    async for documento in collection.find({"category": category}):
         artigos.append(artigo_helper(documento))
     return artigos
 

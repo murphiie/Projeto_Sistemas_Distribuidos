@@ -1,13 +1,13 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 
-# Esta é a implementação da sua Tarefa 2: Modelos Pydantic 
+
 class Artigo(BaseModel):
-    titulo: str = Field(..., min_length=5)
+    titulo: str
     corpo: str
     autor: str
-    categoria: str  # Campo crucial para a estratégia de Sharding [cite: 24, 54, 77]
-    data_publicacao: datetime = Field(default_factory=datetime.now)
+    category: str  # Use o nome em inglês aqui
+    data_publicacao: str
 
     class Config:
         json_schema_extra = {
