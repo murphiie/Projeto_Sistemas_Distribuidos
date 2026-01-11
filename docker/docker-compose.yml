@@ -1,0 +1,69 @@
+version: "3.9"
+
+services:
+
+  configsvr:
+    image: mongo:7
+    container_name: configsvr
+    command: >
+      mongod --configsvr --replSet configReplSet --port 27019
+    volumes:
+      - configsvr_data:/data/db
+    networks:
+      - mongo_cluster
+
+  shard1:
+    image: mongo:7
+    container_name: shard1
+    command: >
+      mongod --shardsvr --replSet shard1ReplSet --port 27018
+    volumes:
+      - shard1_data:/data/db
+    networks:
+      - mongo_cluster
+
+  shard2:
+    image: mongo:7
+    container_name: shard2
+    command: >
+      mongod --shardsvr --replSet shard2ReplSet --port 27018
+    volumes:
+      - shard2_data:/data/db
+    networks:
+      - mongo_cluster
+
+  mongos:
+    image: mongo:7
+    container_name: mongos
+    depends_on:
+      - configsvr
+      - shard1
+      - shard2
+    command: >
+      mongos --configdb configReplSet/configsvr:27019 --port 27017
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo:/mongo
+    networks:
+      - mongo_cluster
+
+  api:
+    build:
+      context: ../api
+    container_name: newsflow_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongos
+    networks:
+      - mongo_cluster
+
+volumes:
+  configsvr_data:
+  shard1_data:
+  shard2_data:
+
+networks:
+  mongo_cluster:
+    driver: bridge
