@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .env
 *.sqlite3
+venv/
+node_modules/
+.vscode/
