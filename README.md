@@ -8,7 +8,7 @@ O sistema permite a publicação, listagem e filtragem de notícias de forma ass
 ##  Tecnologias Utilizadas
 * **Linguagem:** Python 3.12
 * **Framework Web:** [FastAPI](https://fastapi.tiangolo.com/) (Async ASGI)
-* **Banco de Dados:** MongoDB (Cluster com Sharding)
+* **Banco de Dados:** MongoDB 6.0 (Cluster Sharded + Replica Set)
 * **Driver do Banco:** [Motor](https://motor.readthedocs.io/) (Conexão Assíncrona)
 * **Validação de Dados:** [Pydantic](https://docs.pydantic.dev/)
 * **Containerização:** Docker & Docker Compose
