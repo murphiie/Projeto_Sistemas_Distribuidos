@@ -22,11 +22,22 @@ async def root():
 @app.post("/artigos/", status_code=status.HTTP_201_CREATED, response_model=dict, tags=["Artigos"])
 async def criar_artigo(artigo: Artigo = Body(...)):
     """Publica um novo artigo no banco de dados distribuído."""
+    # Converte o modelo Pydantic para um dicionário compatível com JSON
     artigo_dict = jsonable_encoder(artigo)
-    #  conexão assíncrona (Motor) 
+    
+    # Inserção no MongoDB (Motor)
     novo_artigo = await collection.insert_one(artigo_dict)
-    criado = await collection.find_one({"_id": novo_artigo.inserted_id})
-    return artigo_helper(criado)
+    
+    # Ebuscar usando o ID E a Shard Key
+    criado = await collection.find_one({
+        "_id": novo_artigo.inserted_id,
+        "category": artigo_dict["category"] 
+    })
+    
+    if criado:
+        return artigo_helper(criado)
+    
+    raise HTTPException(status_code=400, detail="Erro ao recuperar artigo após criação")
 
 #  3. LISTAR TODOS OS ARTIGOS (GET) 
 @app.get("/artigos/", response_model=List[dict], tags=["Artigos"])

@@ -6,7 +6,7 @@ class Artigo(BaseModel):
     titulo: str
     corpo: str
     autor: str
-    category: str  # Use o nome em inglês aqui
+    category: str  
     data_publicacao: str
 
     class Config:
@@ -15,6 +15,7 @@ class Artigo(BaseModel):
                 "titulo": "Sistemas Distribuídos na Prática",
                 "corpo": "Conteúdo detalhado sobre escalabilidade...",
                 "autor": "Geovana Rodrigues",
-                "categoria": "Tecnologia"
+                "category": "Tecnologia", 
+                "data_publicacao": "2026-01-11" 
             }
         }
