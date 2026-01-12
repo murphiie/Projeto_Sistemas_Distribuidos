@@ -3,11 +3,22 @@ services:
     image: mongo:6
     container_name: configsvr
     command: mongod --configsvr --replSet rs-config --port 27017 --bind_ip_all
+    networks:
+      - newsflow_net
 
   shard1:
     image: mongo:6
     container_name: shard1
     command: mongod --shardsvr --replSet rs-shard1 --port 27017 --bind_ip_all
+    networks:
+      - newsflow_net
+
+  shard2:
+    image: mongo:6
+    container_name: shard2
+    command: mongod --shardsvr --replSet rs-shard2 --port 27017 --bind_ip_all
+    networks:
+      - newsflow_net
 
   mongos:
     image: mongo:6
@@ -18,6 +29,9 @@ services:
     depends_on:
       - configsvr
       - shard1
+      - shard2
+    networks:
+      - newsflow_net
 
   api:
     build: .
@@ -28,3 +42,9 @@ services:
       - DATABASE_URL=mongodb://mongos:27017
     depends_on:
       - mongos
+    networks:
+      - newsflow_net
+
+networks:
+  newsflow_net:
+    driver: bridge
