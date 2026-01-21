@@ -1,10 +1,10 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 
-# Esta URL será configurada depois no Docker. 
-MONGODB_URL = "mongodb://localhost:27017"
+MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://localhost:27017")
 
-client = AsyncIOMotorClient("mongodb://mongos:27017")
+# 2. Criamos o cliente usando a variável
+client = AsyncIOMotorClient(MONGODB_URL)
 db = client.newsflow_db
 collection = db.get_collection("artigos")
 
